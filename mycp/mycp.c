@@ -24,11 +24,13 @@
           else {
               printf("unable to write %s", argv[2]);
           }
+          close(file_to_write);
 
       }
       else {
           printf("unable to open %s", argv[1]);
       }
+      close(file);
       printf("\n");
       return 0;
  }
