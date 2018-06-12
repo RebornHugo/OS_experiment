@@ -1,9 +1,11 @@
-#include<stdio.h>
+#include <stdio.h>
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[])
+{
     // printf("arguments number is : %d\n", argc - 1);
     int i;
-    for(i = 1; i < argc; i++) {
+    for (i = 1; i < argc; i++)
+    {
         printf("%s ", argv[i]);
     }
     printf("\n");
