@@ -1,22 +1,50 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <string.h>
-
-void mysys(char str[])
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <stdlib.h>
+int mysys(const char *cmdstring)
 {
-
-    int error;
     pid_t pid;
-    char 
-    pch = strtok(str," ");
-    pid = fork();
-    if (pid == 0) {
-       error =  execlp("/bin/echo", "echo", "a", "b", "c", NULL); 
-       if (error < 0)
-           perror("execl");
+    int status;
+    if (cmdstring == NULL)
+    {
+        printf("null cmd\n");
+        return 1;
     }
+    if ((pid = fork()) < 0)
+    {
+        status = -1;
+    }
+    else if (pid == 0)
+    {
+        execl("/bin/sh", "sh", "-c", cmdstring, NULL);
+        _exit(127);
+    }
+    else
+    {
+        while (waitpid(pid, &status, 0) < 0)
+        {
+            if (errno != EINTR)
+            {
+                status = -1;
+                break;
+            }
+        }
+    }
+    return status;
 }
 
 
-
-
+int main()
+{
+    char *str = NULL;
+    printf("-----------------------------\n");
+    mysys("echo HELLO WORLD");
+    mysys(str);
+    printf("-----------------------------\n");
+    system("ls /");
+    printf("------------------------------\n");
+    return 0;
+}
