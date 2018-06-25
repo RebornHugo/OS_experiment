@@ -42,9 +42,9 @@ int main()
     char *str = NULL;
     printf("-----------------------------\n");
     mysys("echo HELLO WORLD");
-    mysys(str);
+    // mysys(str);
     printf("-----------------------------\n");
-    system("ls /");
+    mysys("ls /");
     printf("------------------------------\n");
     return 0;
 }

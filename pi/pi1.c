@@ -20,7 +20,7 @@ void *compute(void *arg) {
 }
 
 int main() {
-    int n = 20;
+    int n = 23;
     pthread_t worker_tid;
     struct arg_struct *parent = malloc(sizeof(struct arg_struct));
     struct arg_struct *child = malloc(sizeof(struct arg_struct));
