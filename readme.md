@@ -1,6 +1,6 @@
 ---
 typora-copy-images-to: ./images
-typora-root-url: ..
+typora-root-url: .
 ---
 
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 ```
 argc代表命令行中参数个数, 包括文件名本身(第0个参数). argv则包含命令行的输入. 可以使用一个loop按顺序输出
 
-![1529940185866](/OS_experiment/images/1529940185866.png)
+![1529940185866](./images/1529940185866.png)
 
 ## mycat.c
 
@@ -59,7 +59,7 @@ core code
 
 将argv第1个参数, 也就是文件名读入, 然后打开, 读入到字符数组并输出
 
-![1529940572263](/OS_experiment/images/1529940572263.png)
+![1529940572263](./images/1529940572263.png)
 
 ## mycp.c
 
@@ -99,7 +99,7 @@ core code1
 
 file_to_write即是待写入的文件, 写入length字节长的buf, 注意这里的length很关键, 不然会有乱码,  因为读入的buf超过了原文件本身.
 
-![1529941197893](/OS_experiment/images/1529941197893.png)
+![1529941197893](./images/1529941197893.png)
 
 # 多进程题目
 
@@ -137,7 +137,7 @@ file_to_write即是待写入的文件, 写入length字节长的buf, 注意这里
 
 这里调用fork()后, 创建一个子进程，父子进程并发运行, 子进程返回0, 进入第一个分支, 调用execl, 参数是主函数传来需要执行的命令, 父进程返回的子进程PID, 不是零, 进入下一条分支, 等待子进程执行完, 结束程序.
 
-![1529941741939](/OS_experiment/images/1529941741939.png)
+![1529941741939](./images/1529941741939.png)
 
 ## sh1.c
 
@@ -234,7 +234,7 @@ core code 3
 
 运行截图
 
-![1529944245906](/OS_experiment/images/1529944245906.png)
+![1529944245906](./images/1529944245906.png)
 
 ## sh2.c: 
 
@@ -305,7 +305,7 @@ core code3
 
 运行截图
 
-![1529945524620](/OS_experiment/images/1529945524620.png)
+![1529945524620](./images/1529945524620.png)
 
 ## pi2.c: 
 
