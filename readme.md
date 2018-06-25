@@ -315,5 +315,92 @@ core code3
 > - 每个辅助线程计算一部分任务，并将结果返回
 > - 主线程等待N个辅助线程运行结束，将所有辅助线程的结果累加
 
+本题相较于上一题, 线程数量变多, 需要使用数组来存放线程id与线程参数, 需要使用循环来对参数初始化并创建线程, 并且线程需要返回值
 
+core code 1
 
+```c
+struct arg_struct {
+    int start;
+    int end;
+};
+struct result {
+    float sum;
+};
+```
+
+以上是定义的参数结构题, 返回值的结构体
+
+core code 2
+
+```c
+    pthread_t workers[NR_CPU];
+    struct arg_struct args[NR_CPU];
+    int p = 1;
+    for (i = 0; i < NR_CPU; i++) {
+        struct arg_struct *arg;
+        arg = &args[i];
+        arg->start = p;
+        if (p + n / NR_CPU - 1 <= n) {
+            arg->end = p + n / NR_CPU - 1;
+        } else {
+            arg->end = n;
+            break;
+        }
+        pthread_create(&workers[i], NULL, &compute, arg);
+        p += (n / NR_CPU);
+    }
+```
+
+这里workers数组存放多个线程id, arg_struct数组存放每个线程的参数, 使用下方的循环做初始化, 即找到每个线程中计算$\pi$值的开始和结束序列号, 并且创建线程.
+
+core code 3
+
+```c
+void *compute(void *arg) {
+    struct arg_struct *me;
+    me = (struct arg_struct *) arg;
+    int start = me->start;
+    int end = me->end;
+    float sum = 0;
+    for (; start <= end; start++)
+        sum += powf(-1, start + 1) / (2 * start - 1);
+    struct result *res;
+    res = malloc(sizeof(struct result));
+    res->sum = sum;
+//    printf("**  %f\n", res->sum);
+    return res;
+}
+```
+
+定义计算$\pi$值的函数, 在上题基础上增加返回值功能.
+
+core code 4
+
+```c
+    float sum = 0;
+    for (i = 0; i < NR_CPU; i++) {
+        struct result *result;
+        pthread_join(workers[i], (void **) &result);
+        sum += result->sum;
+//        printf("result->sum = %d\n", result->sum);
+        free(result);
+    }
+```
+
+线程同步, 用一个循环确保每个子线程都结束运行, 并且返回值存在result中, 累加得到的sum即为$\pi/4$.
+
+运行截图:
+
+![1529946873730](/images/1529946873730.png)
+
+## pc1.c: 
+
+> - 使用条件变量解决生产者、计算者、消费者问题
+> - 系统中有3个线程：生产者、计算者、消费者
+> - 系统中有2个容量为4的缓冲区：buffer1、buffer2
+> - 生产者生产'a'、'b'、'c'、‘d'、'e'、'f'、'g'、'h'八个字符，放入到buffer1
+> - 计算者从buffer1取出字符，将小写字符转换为大写字符，放入到buffer2
+> - 消费者从buffer2取出字符，将其打印到屏幕上
+
+这个题重点在于弄清生产者, 计算者, 消费者的运行逻辑以及互斥关系, 计算者要从生产者存放item的buffer1中get item, 并进行计算, 大小写转换后放入buffer2, 消费者从buffer2中再读取利用.
